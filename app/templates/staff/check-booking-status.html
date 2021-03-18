@@ -1,0 +1,113 @@
+{% extends 'base/index.html' %}
+
+{% block login_staff %}
+    <div class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+        <span class="hover-user">
+            <a class="navbar-hover"><i class="fa fa-user"> User</i></a>
+            <div class="sub-content">
+                <span>Username: </span>{{ current_user.username }}
+            </div>
+        </span>
+        <a class="navbar-hover" href="{{ url_for('logout_usr') }}"><i class="fa fa-sign-out"> Log out</i></a>
+        {% else %}
+        <a class="navbar-hover" href="{{ url_for('login_staff') }}"><i class="fa fa-sign-in"></i> Sign in</a>
+        <a class="navbar-hover" href="{{ url_for('register') }}"><i class="fa fa-user-plus"></i> Sign up</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block function %}
+
+    <section class="contact-form" id="section_ticket">
+        <div class="container">
+            <div class="section-heading">
+                <h2>booking confirmation</h2>
+            </div>
+            <div class="s009">
+                <form action="{{ url_for('check_booking_status_staff') }}" method="post">
+                    <div class="inner-form">
+                        <div class="advance-search">
+                            <table class="table table-hover table-air-ticket-info" style="text-align:left" >
+                                <thead>
+                                    <tr>
+                                        <td colspan=12>
+                                            <span class="desc">AIR TICKET INFORMATION</span>
+                                            <div class="mess-err-1">{{ mess_err }}</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">No</th>
+                                        <th scope="row">First name</th>
+                                        <th scope="row">Last name</th>
+                                        <th scope="row">Identity card</th>
+                                        <th scope="row">Email</th>
+                                        <th scope="row">Phone</th>
+                                        <th scope="row">Id flight</th>
+                                        <th scope="row">Export time</th>
+                                        <th scope="row">Seat</th>
+                                        <th scope="row">Price</th>
+                                        <th scope="row" colspan=2 style="text-align:center">Confirmation status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for ticket, ticket_info in zip_ticket_info %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ ticket.customer.firstname}}</td>
+                                        <td>{{ ticket.customer.lastname }}</td>
+                                        <td>{{ ticket.customer.identity_card }}</td>
+                                    {% if ticket.customer.email  %}
+                                        <td>{{ ticket.customer.email}}</td>
+                                    {% else %}
+                                        <td></td>
+                                    {% endif %}
+                                        <td>{{ ticket.customer.phone }}</td>
+                                        <td>{{ ticket.idFlight}}</td>
+                                        {% if ticket.exportTime %}
+                                            <td>{{ ticket.exportTime }}</td>
+                                        {% else %}
+                                            <td></td>
+                                        {% endif %}
+                                        <td>{{ ticket_info.seat_location }}</td>
+                                        <td>{{ ticket_info.price }}$</td>
+                                        {% if ticket.idAccount %}
+                                        <td colspan=2 style="text-align:center">Confirmed</td>
+                                        {% else %}
+                                        <td>
+                                            <button class="btn-book-ticket-1" onclick="confirmBookTicket()"
+                                                      value="{{ ticket.idTicket }}" name="confirm"
+                                                     style="width:300px">Confirm</button>
+                                        </td>
+                                        <td>
+                                            <button class="btn-book-ticket-1" onclick="confirmBookTicket()"
+                                                      value="{{ ticket.idTicket }}" name="delete"
+                                                     style="width:300px">Delete</button>
+                                        </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    <script>
+        function confirmBookTicket() {
+            var txt = '';
+            var r = confirm("Are you sure!");
+
+            if (r == true) {
+                txt = "You pressed OK!";
+            } else {
+                txt = "You pressed Cancel!";
+            }
+            document.getElementById("demo").innerHTML = txt;
+            }
+    </script>
+    </section>
+{% endblock %}

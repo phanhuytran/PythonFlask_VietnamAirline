@@ -1,0 +1,18 @@
+{% extends 'base/log.html' %}
+
+{% block function %}
+<div class="content clearfix">
+    <ul id="p-frm" style="margin: -5px auto;">
+        <form action="{{ url_for('login_admin') }}" method="post">
+            {% if message %}
+                <div style="color: red; font: 17px normal; margin: 0 -7px"> {{ message }} </div>
+            {% endif %}
+            <li><strong>Username</strong></li>
+            <li><input type="text" name="username" id="username" placeholder="Username" required /></li>
+            <li><strong>Password</strong></li>
+            <li><input type="password" name="password" id="password" placeholder="Password" required /></li>
+            <li><input type="submit" class="btn" id="login" value="Login"/></li>
+        </form>
+    </ul>
+</div>
+{% endblock %}

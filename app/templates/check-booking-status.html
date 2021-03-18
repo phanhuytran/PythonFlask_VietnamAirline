@@ -1,0 +1,97 @@
+{% extends 'base/index.html' %}
+
+{% block function %}
+
+    <section class="contact-form" id="section_ticket">
+        <div class="container">
+            <div class="section-heading">
+                <h2>booking confirmation</h2>
+                <h2 id="demo"></h2>
+            </div>
+            <div class="s009">
+                <form action="{{ url_for('check_booking_status') }}" method="post">
+                    <div class="inner-form">
+                        <div class="advance-search">
+                            <div class="row">
+                                <div class="input-field">
+                                    <img style="width:80%" src="{{ url_for('static', filename='img/vna1.png') }}"/>
+                                </div>
+                                <div class="input-field">
+                                    <input type="text" name="first_name" placeholder="First name..." required/>
+                                </div>
+                                <div class="input-field">
+                                    <input type="text" name="last_name" placeholder="Last name..." required />
+                                </div>
+                            </div>
+
+                            <div class="row second">
+                                <div class="input-field">
+                                    <input type="text" name="identity_card" placeholder="Identity card..." required />
+                                </div>
+                                <div class="input-field">
+                                    <input type="text" name="email" placeholder="Email..." />
+                                </div>
+                                <div class="input-field">
+                                    <input type="text" name="phone" placeholder="Phone..."  required/>
+                                </div>
+                            </div><br/>
+
+                            <div class="row third">
+                                <div class="input-field">
+                                    <div class="result-count">
+                                    </div>
+                                    <div class="submit-search">
+                                        <input class="btn-search" type="submit" value="ORDER TICKET NOW" style="width:300px" name="btn"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table table-hover table-air-ticket-info" style="text-align:left" >
+                                <thead>
+                                    <tr>
+                                        <td colspan=11><span class="desc">AIR TICKET INFORMATION</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">No</th>
+                                        <th scope="row">First name</th>
+                                        <th scope="row">Last name</th>
+                                        <th scope="row">Identity card</th>
+                                        <th scope="row">Email</th>
+                                        <th scope="row">Phone</th>
+                                        <th scope="row">Flight</th>
+                                        <th scope="row">Departure date</th>
+                                        <th scope="row">Seat</th>
+                                        <th scope="row">Price</th>
+                                        <th scope="row">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for ticket in list_ticket %}
+                                        <tr>
+                                            <th scope="row">{{ loop.index }}</th>
+                                            <td>{{ ticket.firstname }}</td>
+                                            <td>{{ ticket.lastname }}</td>
+                                            <td>{{ ticket.identity_card }}</td>
+                                            <td>{{ ticket.email }}</td>
+                                            <td>{{ ticket.phone }}</td>
+                                            <td>{{ ticket.idFlight }}</td>
+                                            <td>{{ ticket.derpartureTime }}</td>
+                                            <td>{{ ticket.seat_location }}</td>
+                                            <td>{{ ticket.price }}</td>
+                                            {% if ticket.id_account %}
+                                                <td>Successful ticket booking</td>
+                                            {% else %}
+                                                <td>Waiting for recognition</td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}
